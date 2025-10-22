@@ -24,17 +24,84 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 
 **Procedure**
 
-/* write all the steps invloved */
+1.Increment count on each positive edge of the clock. 2.Reset count to zero when it reaches 15. 3.Generate clock signal (clk). 4.Instantiate the RippleCounter module. 5.Conduct functional testing by displaying the count at each clock cycle for 16 cycles.
 
-**PROGRAM**
+PROGRAM
 
 /* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
 
- Developed by: RegisterNumber:
-*/
+Developed by: Sreejaa RegisterNumber: 25015302
 
-**RTL LOGIC FOR 4 Bit Ripple Counter**
 
-**TIMING DIGRAMS FOR 4 Bit Ripple Counter**
+module RippleCounter(
+   input wire clk,  // Clock input
+   output reg [3:0] count // 4-bit counter output
+);
 
-**RESULTS**
+// Counter logic
+always @(posedge clk) begin
+   if (count == 4'b1111) // Reset when count reaches 15
+       count <= 4'b0000;
+   else
+       count <= count + 1; // Increment count
+end
+
+endmodule
+
+// Testbench
+module RippleCounter_tb;
+
+// Inputs
+reg clk;
+
+// Outputs
+wire [3:0] count;
+
+// Instantiate the counter
+RippleCounter uut(
+   .clk(clk),
+   .count(count)
+);
+
+// Clock generation
+initial begin
+   clk = 0;
+   forever #5 clk = ~clk; // Toggle clock every 5 time units
+end
+
+// Stimulus
+initial begin
+   // Wait for a few clock cycles
+   #10;
+   
+   // Display header
+   $display("Time | Count");
+   $display("-----------------");
+   
+   // Functional table testing
+   // Increment count 16 times and display the count
+   repeat (16) begin
+       #5; // Wait for one clock cycle
+       $display("%4d | %b", $time, count);
+   end
+   
+   // End simulation
+   $finish;
+end
+
+endmodule
+
+RTL LOGIC FOR 4 Bit Ripple Counter
+
+<img width="711" height="368" alt="502889401-0335d80f-70d0-44ef-9c39-efcc0cb9728d" src="https://github.com/user-attachments/assets/05aa1171-af59-49d0-9bc1-f5c1668f3ba6" />
+
+
+
+TIMING DIGRAMS FOR 4 Bit Ripple Counter
+
+<img width="824" height="260" alt="502889427-d4ce5f14-cd58-478e-8f93-df7c0d60eb70" src="https://github.com/user-attachments/assets/859adafe-8fb1-4daf-bdda-aad67a3c2f2a" />
+
+
+RESULTS
+
+Thus the program executed succesfully.
